@@ -1,0 +1,91 @@
+{
+  "name": "ai-draw",
+  "displayName": "AI画画",
+  "version": "0.1.0",
+  "description": "AI绘画服务，支持腾讯混元等多厂商生图 API。可独立运行，也可作为星序子应用集成",
+  "required": false,
+  
+  "capabilities": [
+    "ai:image:generate",
+    "ai:image:submit",
+    "ai:image:query",
+    "ai:image:config"
+  ],
+  
+  "cli": {
+    "enabled": true,
+    "bin": "./bin/najie-ai-draw.js",
+    "commands": {
+      "generate": {
+        "description": "生成图片",
+        "args": ["--prompt", "--model", "--resolution", "--style", "--output"]
+      },
+      "query": {
+        "description": "查询异步任务结果",
+        "args": ["--jobId"]
+      },
+      "config:set": {
+        "description": "设置配置",
+        "args": ["--secretId", "--secretKey", "--region", "--provider"]
+      },
+      "config:show": {
+        "description": "显示当前配置"
+      },
+      "serve": {
+        "description": "启动 Web UI 服务",
+        "args": ["--port"]
+      }
+    }
+  },
+  
+  "api": {
+    "enabled": true,
+    "module": "./lib/index.js",
+    "exports": {
+      "generateImage": {
+        "description": "同步生成图片",
+        "params": ["provider", "config", "subModel", "prompt", "resolution", "style"],
+        "returns": "{ success: boolean, imageUrl?: string, error?: string }"
+      },
+      "submitImageJob": {
+        "description": "提交异步生图任务",
+        "params": ["provider", "config", "prompt"],
+        "returns": "{ success: boolean, jobId?: string, error?: string }"
+      },
+      "queryImageJob": {
+        "description": "查询异步任务结果",
+        "params": ["provider", "config", "jobId"],
+        "returns": "{ success: boolean, status?: string, imageUrl?: string, error?: string }"
+      },
+      "getSupportedProviders": {
+        "description": "获取支持的提供商列表",
+        "params": [],
+        "returns": "Array<{ id, name, supportsAsync }>"
+      },
+      "getSupportedModels": {
+        "description": "获取支持的模型列表",
+        "params": [],
+        "returns": "Array<{ id, name, provider, description }>"
+      }
+    }
+  },
+  
+  "ui": {
+    "enabled": true,
+    "port": 5178,
+    "startCommand": "npm run subapp",
+    "stopCommand": "npm run subapp:stop",
+    "entry": "./ui/dist/index.html",
+    "buildCommand": "npm run build",
+    "requireBuild": true,
+    "routes": [
+      { "path": "/", "name": "画画" },
+      { "path": "/history", "name": "历史" },
+      { "path": "/config", "name": "设置" }
+    ]
+  },
+  
+  "dependencies": {
+    "runtime": ["tencentcloud-sdk-nodejs", "commander", "express", "cors"]
+  }
+}

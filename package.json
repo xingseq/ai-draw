@@ -1,0 +1,42 @@
+{
+  "name": "@najie/ai-draw",
+  "version": "0.1.0",
+  "description": "AI 绘画 Skill - 多厂商生图服务，支持腾讯混元等",
+  "type": "module",
+  "main": "./lib/index.js",
+  "bin": {
+    "najie-ai-draw": "./bin/najie-ai-draw.js"
+  },
+  "exports": {
+    ".": "./lib/index.js"
+  },
+  "scripts": {
+    "subapp": "node ./bin/najie-ai-draw.js serve",
+    "subapp:stop": "npx kill-port 5178",
+    "dev": "concurrently \"npm run subapp\" \"npm run dev:ui\"",
+    "dev:ui": "vite --config ui/vite.config.js",
+    "build": "vite build --config ui/vite.config.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "commander": "^12.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "tencentcloud-sdk-nodejs": "^4.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.0",
+    "autoprefixer": "^10.4.16",
+    "concurrently": "^8.2.2",
+    "lucide-react": "^0.294.0",
+    "postcss": "^8.4.31",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.3.5",
+    "vite": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": ["ai", "draw", "image", "generation", "hunyuan"]
+}
