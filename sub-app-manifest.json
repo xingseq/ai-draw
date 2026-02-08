@@ -15,6 +15,7 @@
   "cli": {
     "enabled": true,
     "bin": "./bin/najie-ai-draw.js",
+    "style": "subcommand",
     "commands": {
       "generate": {
         "description": "生成图片",
